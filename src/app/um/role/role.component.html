@@ -1,0 +1,98 @@
+
+<h6>Manage Roles</h6>
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-7 d-flex justify-content-end">
+            <button class="btn btn-primary" (click)="openModal()">Add Role</button>
+        </div>
+    </div>
+    
+<!-- list of role  -->
+<div class="row mt-3">
+    <div class="col-md-12">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let role of Roles">
+            <td>{{role.name}}</td>
+            <td>{{role.description}}</td>
+            <td class="align-left">
+              <button class="btn btn-warning btn-sm mx-2" (click)="openModal(role)">
+               <i class="fas fa-edit"></i>
+              </button>
+               <button class="btn btn-danger btn-sm" (click)="deleteRole(role)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+    </div>
+  </div>
+
+  <!-- modal  -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-title"> {{currentRole ? 'Edit Role' : 'Add Role'}}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label for="name">Name:</label>
+          <input type="text" formControlName="name" class="form-control"
+          [ngClass]="{'is-invalid': roleForm.get('name')?.invalid && roleForm.get('name')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched">
+            Role name is required
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="description">Description:</label>
+          <input type="text" formControlName="description" class="form-control"
+          [ngClass]="{'is-invalid': roleForm.get('description')?.invalid && roleForm.get('description')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="roleForm.get('description')?.invalid && roleForm.get('description')?.touched"> 
+           Role description is required
+          </div>
+        </div>
+        <div class="mb-3">
+            <label for="permissions" class="form-label">Permissions</label>
+            <div *ngFor="let permission of permissions">
+                <input
+                 type="checkbox"
+                 [id]="permission._id"
+                 [checked]="permission.selected"
+                 (change)="onCheckboxChange($event, permission._id)"
+                />
+              <label for="permission._id" class="mx-2">{{permission.name}}</label>
+            </div>
+            <div class="invalid-feedback" *ngIf="roleForm.get('permissions')?.invalid && roleForm.get('permissions')?.touched">
+              At least one permission must be selected
+            </div>
+            
+        </div>
+        <button type="submit" class="btn btn-primary custom-btn mx-2">{{currentRole ? 'update' :'save'}}</button>
+        <button type="submit" class="btn btn-secondary custom-btn" (click)="resetForm(); modal.dismiss('Cross click')">cancel</button>
+      </form>
+    </div>
+  </ng-template>
+
+</div>
+
+
+
+
+  

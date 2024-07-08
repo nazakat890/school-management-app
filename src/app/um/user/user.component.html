@@ -1,0 +1,166 @@
+<h6>Manage Users</h6>
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-5">
+        </div>
+        <div class="col-md-7 d-flex justify-content-end">
+            <button class="btn btn-primary" (click)="openModal()">Add User</button>
+        </div>
+    </div>
+
+
+<!-- user list  -->
+<div class="row mt-3">
+    <div class="col-md-12">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Verified</th>
+            <!-- <th>Date Of Birth</th>
+            <th>Mobile Number</th>
+            <th>Gender</th>
+            <th>Occupation</th> -->
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of Users">
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.isVerified ? 'Yes' : 'No' }}</td>
+            <!-- <td>{{user.description}}</td>
+            <td>{{user.description}}</td>
+            <td>{{user.description}}</td> -->
+            <td class="align-left">
+              <button class="btn btn-warning btn-sm mx-2" (click)="openModal(user)">
+               <i class="fas fa-edit"></i>
+              </button>
+               <button class="btn btn-danger btn-sm" (click)="deleteUser(user)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button 
+                 *ngIf="!user.isVerified"
+                 class="btn btn-success btn-sm mx-2"
+                 (click)="verifyUser(user)">
+                <i class="fas fa-check"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+    </div>
+  </div>
+ <!-- modal  -->
+<div class="container">
+    <ng-template #content let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-title"> {{currentUser ? 'Edit User' : 'Add User'}}</h5>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    
+        <div class="modal-body">
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="username">Full Name</label>
+                        <input type="text" formControlName="username" class="form-control"
+                        [ngClass]="{'is-invalid': userForm.get('username')?.invalid && userForm.get('username')?.touched}"
+                        >
+                        <div class="invalid-feedback" *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched">
+                          user name is required
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" formControlName="email" class="form-control"
+                        [ngClass]="{'is-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched}"
+                        >
+                        <div class="invalid-feedback" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                          email is required
+                        </div>
+                      </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth</label>
+                        <input type="text" formControlName="dateOfBirth" class="form-control"
+                        [ngClass]="{'is-invalid': userForm.get('dateOfBirth')?.invalid && userForm.get('dateOfBirth')?.touched}"
+                        >
+                        <div class="invalid-feedback" *ngIf="userForm.get('dateOfBirth')?.invalid && userForm.get('dateOfBirth')?.touched">
+                          date of birth is required
+                        </div>
+                      </div>
+                </div>
+    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="mobileNumber">Mobile Number</label>
+                        <input type="text" formControlName="mobileNumber" class="form-control"
+                        [ngClass]="{'is-invalid': userForm.get('mobileNumber')?.invalid && userForm.get('mobileNumber')?.touched}"
+                        >
+                        <div class="invalid-feedback" *ngIf="userForm.get('mobileNumber')?.invalid && userForm.get('mobileNumber')?.touched">
+                          mobile number is required
+                        </div>
+                      </div>
+                </div>
+    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <input type="text" formControlName="gender" class="form-control"
+                        [ngClass]="{'is-invalid': userForm.get('gender')?.invalid && userForm.get('gender')?.touched}"
+                        >
+                        <div class="invalid-feedback" *ngIf="userForm.get('gender')?.invalid && userForm.get('gender')?.touched">
+                          gender is required
+                        </div>
+                      </div>
+                </div>
+    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="occupation">Occupation</label>
+                        <input type="text" formControlName="occupation" class="form-control"
+                        [ngClass]="{'is-invalid': userForm.get('occupation')?.invalid && userForm.get('occupation')?.touched}"
+                        >
+                        <div class="invalid-feedback" *ngIf="userForm.get('occupation')?.invalid && userForm.get('occupation')?.touched">
+                            occupation is required
+                        </div>
+                      </div>
+                </div> -->
+
+                <div class="col-md-12 mb-3">
+                  <label for="Roles" class="form-label">Roles:</label>
+                  <div *ngFor="let role of Roles">
+                      <input
+                       type="checkbox"
+                       [id]="role._id"
+                       [checked]="role.selected"
+                       (change)="onCheckboxChange($event, role._id)"
+                      />
+                    <label for="role._id" class="mx-2">{{role.name}}</label>
+                  </div>
+                  <div class="invalid-feedback" *ngIf="userForm.get('roles')?.invalid && userForm.get('roles')?.touched">
+                      At least one role must be selected
+                    </div>
+              </div>
+                
+            </div>
+           
+            <button type="submit" class="btn btn-primary custom-btn mx-2">{{currentUser ? 'update' :'save'}}</button>
+            <button type="submit" class="btn btn-secondary custom-btn" (click)="resetForm(); modal.dismiss('Cross click')">cancel</button>
+          </form>
+        </div>
+      </ng-template>
+</div>
+
+
+
+</div>

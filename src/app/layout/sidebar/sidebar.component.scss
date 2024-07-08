@@ -1,0 +1,23 @@
+  .components li a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .components li a:hover, 
+  .components li a.active {
+    background: #e9ecef;
+    color: #007bff;
+  }
+
+  .list-unstyled {
+    padding-left: 0px;
+  }
+
+  .list-unstyled li ul {
+    padding-left: 20px;
+  }
+  .dropdown-icon {
+    float: right;
+  }

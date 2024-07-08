@@ -1,0 +1,21 @@
+<nav id="sidebar" class="bg-light border-right">
+        <ul class="list-unstyled components">
+         <li>
+            <a routerLink="/dashboard">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        </li>
+         <li>
+            <a (click)="toggleUMMenu()" [class.active]="isUMMenuOpen">
+                <i class="fas fa-users-cog"></i> User-Management
+              <span class="dropdown-icon"><i class="fas fa-caret-down"></i></span>
+            </a>
+            <ul *ngIf="isUMMenuOpen" class="list-unstyled">
+                <li><a routerLink="/um/users"><i class="fas fa-user"></i> Users</a></li>
+                <li><a routerLink="/um/roles"><i class="fas fa-user-tag"></i> Roles</a></li>
+                <li><a routerLink="/um/permissions"><i class="fas fa-user-shield"></i> Permissions</a></li>
+              </ul>
+          </li>
+        </ul>
+
+</nav>
